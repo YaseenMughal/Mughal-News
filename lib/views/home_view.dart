@@ -6,7 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mughal_news/models/category_news_model.dart';
 import 'package:mughal_news/models/news_channel_headlines_model.dart';
 import 'package:mughal_news/view_models/news_view_model.dart';
-import 'package:mughal_news/views/category_screen.dart';
+import 'package:mughal_news/views/category_view.dart';
 import 'package:mughal_news/views/news_detail_view.dart';
 
 class HomeView extends StatefulWidget {

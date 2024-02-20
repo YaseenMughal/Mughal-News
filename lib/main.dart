@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mughal_news/utils/routes/routes.dart';
+import 'package:mughal_news/utils/routes/routesName.dart';
 import 'package:mughal_news/views/splash_view.dart';
 
 void main() {
@@ -16,7 +18,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SplashView(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: RouteName.splash,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }

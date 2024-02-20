@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:mughal_news/views/home_screen.dart';
+import 'package:mughal_news/res/constant/image_constant.dart';
+import 'package:mughal_news/utils/routes/routesName.dart';
+import 'package:mughal_news/utils/utils.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -13,10 +15,9 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Timer(const Duration(seconds: 5), () {
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const HomeView()), (route) => false);
+      Navigator.pushNamedAndRemoveUntil(context, RouteName.home, (route) => false);
     });
   }
 
@@ -33,7 +34,7 @@ class _SplashViewState extends State<SplashView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/splash_pic.jpg',
+              AppImage.splashImage,
               fit: BoxFit.cover,
               height: height * .5,
               width: width * 1,
@@ -43,17 +44,10 @@ class _SplashViewState extends State<SplashView> {
               "TOP HEADLINES",
               // style: GoogleFonts.anton(
               //     letterSpacing: .6, color: Colors.grey.shade700),
-              style: TextStyle(letterSpacing: .6, color: Colors.grey.shade700, fontFamily: "Ubuntu"),
+              style: AppTextStyle.splashTextStyle,
             ),
             SizedBox(height: height * .05),
-            const SpinKitFadingFour(
-              color: Colors.teal,
-              size: 40.0,
-            )
-            // const SpinKitChasingDots(
-            //   size: 40.0,
-            //   color: Colors.teal,
-            // )
+            Utils.loader()
           ],
         ),
       ),

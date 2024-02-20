@@ -5,9 +5,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 
 class NewsDetailView extends StatefulWidget {
-  final String image, title, date, description, author, content, source;
-  const NewsDetailView(
-      {super.key, required this.image, required this.title, required this.date, required this.description, required this.author, required this.content, required this.source});
+  final String? image, title, date, description, author, content, source;
+  const NewsDetailView({super.key, this.image, this.title, this.date, this.description, this.author, this.content, this.source});
 
   @override
   State<NewsDetailView> createState() => _NewsDetailViewState();
@@ -19,7 +18,7 @@ class _NewsDetailViewState extends State<NewsDetailView> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
-    DateTime dateTime = DateTime.parse(widget.date);
+    DateTime dateTime = DateTime.parse(widget.date.toString());
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
@@ -43,7 +42,7 @@ class _NewsDetailViewState extends State<NewsDetailView> {
                   topRight: Radius.circular(40),
                 ),
                 child: CachedNetworkImage(
-                    imageUrl: widget.image,
+                    imageUrl: widget.image.toString(),
                     fit: BoxFit.fill,
                     placeholder: (context, url) => const Center(
                           child: SpinKitFadingCircle(
@@ -67,7 +66,7 @@ class _NewsDetailViewState extends State<NewsDetailView> {
                 child: ListView(
                   children: [
                     Text(
-                      widget.title,
+                      widget.title.toString(),
                       // style: GoogleFonts.poppins(
                       //     color: Colors.black,
                       //     fontSize: 20,
@@ -103,7 +102,7 @@ class _NewsDetailViewState extends State<NewsDetailView> {
                     //   ],
                     // ),
                     Text(
-                      widget.description,
+                      widget.description.toString(),
                       // style: GoogleFonts.poppins(
                       //     color: Colors.grey,
                       //     fontSize: 14,
