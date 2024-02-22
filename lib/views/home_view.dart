@@ -249,7 +249,20 @@ class _HomeViewState extends State<HomeView> {
                                           context: context,
                                           builder: (context) {
                                             return AlertDialog(
-                                              content: InteractiveViewer(minScale: 1.0, maxScale: 6.0, child: Image.network(snapshot.data!.articles![index].urlToImage.toString())),
+                                              contentPadding: EdgeInsets.zero,
+                                              content: Container(
+                                                  height: height * .4,
+                                                  width: double.infinity,
+                                                  child: InteractiveViewer(
+                                                      minScale: 1.0,
+                                                      maxScale: 6.0,
+                                                      child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(16.0),
+                                                        child: Image.network(
+                                                          snapshot.data!.articles![index].urlToImage.toString(),
+                                                          fit: BoxFit.fill,
+                                                        ),
+                                                      ))),
                                             );
                                           }),
                                       child: ClipRRect(
