@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:mughal_news/res/constant/color_constant.dart';
+import 'package:mughal_news/utils/utils.dart';
 
 class NewsDetailView extends StatefulWidget {
   final String? image, title, date, description, author, content, source;
@@ -20,98 +22,98 @@ class _NewsDetailViewState extends State<NewsDetailView> {
     final width = MediaQuery.of(context).size.width * 1;
     DateTime dateTime = DateTime.parse(widget.date.toString());
     return Scaffold(
-        backgroundColor: Colors.grey[300],
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_ios_new_sharp, color: Colors.black)),
-          elevation: 0,
-        ),
-        body: Stack(
-          children: [
-            Container(
-              height: height * .45,
-              width: width,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+        backgroundColor: Colors.black,
+        body: SafeArea(
+          child: Stack(
+            children: [
+              SizedBox(
+                height: height * .52,
+                width: width,
+                child: Stack(
+                  children: [
+                    Hero(
+                      tag: widget.image!,
+                      child: InkWell(
+                        onTap: () => showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                content: InteractiveViewer(minScale: 1.0, maxScale: 6.0, child: Image.network(widget.image.toString())),
+                              );
+                            }),
+                        child: CachedNetworkImage(
+                            imageUrl: widget.image.toString(),
+                            height: double.infinity,
+                            fit: BoxFit.fill,
+                            placeholder: (context, url) => const Center(
+                                  child: SpinKitFadingCircle(
+                                    color: Colors.teal,
+                                    size: 50.0,
+                                  ),
+                                )),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: 10,
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back_ios_new_sharp, color: Colors.white, size: 35.0),
+                      ),
+                    )
+                  ],
                 ),
-                child: CachedNetworkImage(
-                    imageUrl: widget.image.toString(),
-                    fit: BoxFit.fill,
-                    placeholder: (context, url) => const Center(
-                          child: SpinKitFadingCircle(
-                            color: Colors.teal,
-                            size: 50.0,
-                          ),
-                        )),
               ),
-            ),
-            Container(
-                height: height * .7,
+              Container(
+                height: height * .5,
                 decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
                   ),
                 ),
-                margin: EdgeInsets.only(top: height * .4),
+                margin: EdgeInsets.only(top: height * .48),
                 padding: const EdgeInsets.only(top: 20, left: 20, right: 20, bottom: 20),
                 child: ListView(
                   children: [
-                    Text(
-                      widget.title.toString(),
-                      // style: GoogleFonts.poppins(
-                      //     color: Colors.black,
-                      //     fontSize: 20,
-                      //     fontWeight: FontWeight.w700),
-                      style: const TextStyle(fontSize: 20, color: Colors.black, fontFamily: "Ubuntu"),
+                    Hero(
+                      tag: widget.title!,
+                      child: Text(
+                        widget.title.toString(),
+                        style: const TextStyle(fontSize: 20, color: Colors.black, fontFamily: "Ubuntu", fontWeight: FontWeight.w500),
+                      ),
                     ),
-                    SizedBox(height: height * .04),
-                    Text(
-                      "Channel:- ${widget.source}",
-                      // style: GoogleFonts.anton(
-                      //     fontSize: 15.0, color: Colors.teal),
-                      style: const TextStyle(fontSize: 15, color: Colors.teal, fontFamily: "Ubuntu"),
+                    Utils.appDivider(),
+                    Hero(
+                      tag: widget.source!,
+                      child: Utils.richTexted(
+                        title: "Channel :- ",
+                        subTitle: "${widget.source}",
+                        titleColor: Colors.teal,
+                        subTitleColor: Colors.teal,
+                      ),
                     ),
                     SizedBox(height: height * .02),
-                    Text(
-                      "Date:-            ${format.format(dateTime)}",
-                      // style: GoogleFonts.akshar(
-                      //   fontSize: 13.0,
-                      // ),
-                      style: const TextStyle(fontSize: 13, color: Colors.grey, fontFamily: "Ubuntu"),
+                    Hero(
+                      tag: widget.date!,
+                      child: Utils.richTexted(
+                        title: "Date :- ",
+                        subTitle: format.format(dateTime),
+                      ),
                     ),
-                    SizedBox(height: height * .05),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    //   children: [
-                    // Text(widget.source,
-                    //     style: GoogleFonts.anton(
-                    //         fontSize: 15.0, color: Colors.teal)),
-                    // Text(format.format(dateTime),
-                    //     style: GoogleFonts.akshar(
-                    //       fontSize: 13.0,
-                    //     )),
-                    //   ],
-                    // ),
+                    Utils.appDivider(),
                     Text(
                       widget.description.toString(),
-                      // style: GoogleFonts.poppins(
-                      //     color: Colors.grey,
-                      //     fontSize: 14,
-                      //     fontWeight: FontWeight.w400),
-                      style: const TextStyle(fontSize: 14, color: Colors.grey, fontFamily: "Ubuntu"),
+                      style: TextStyle(fontSize: 15.0, color: AppColor.blackColor.withOpacity(0.5), fontFamily: "Ubuntu"),
                     ),
                   ],
-                ))
-          ],
+                ),
+              )
+            ],
+          ),
         ));
   }
 }

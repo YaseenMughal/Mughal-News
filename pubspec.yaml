@@ -40,10 +40,16 @@ dependencies:
   flutter_spinkit: ^5.2.0
   http: ^1.1.0
   fluttertoast: ^8.2.4
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/splash_pic.jpg"    
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

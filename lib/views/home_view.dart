@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mughal_news/models/category_news_model.dart';
 import 'package:mughal_news/models/news_channel_headlines_model.dart';
+import 'package:mughal_news/res/constant/color_constant.dart';
 import 'package:mughal_news/view_models/news_view_model.dart';
 import 'package:mughal_news/views/category_view.dart';
 import 'package:mughal_news/views/news_detail_view.dart';
@@ -21,7 +21,7 @@ enum FilterList { bbcNews, washington, reuters, cnn, alJazeera }
 class _HomeViewState extends State<HomeView> {
   NewsViewModel newsViewModel = NewsViewModel();
 
-  final format = DateFormat('MMMM dd, yyyy');
+  final format = DateFormat('MMM dd, yyyy');
   Future<void> _handleRefresh() async {
     await Future.delayed(const Duration(seconds: 2));
     setState(() {});
@@ -39,7 +39,6 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         title: Text(
           "News",
-          // style: GoogleFonts.poppins(fontSize: 20, color: Colors.black),
           style: const TextStyle(fontSize: 20, color: Colors.black, fontFamily: "Ubuntu"),
         ),
         leading: IconButton(
@@ -177,7 +176,6 @@ class _HomeViewState extends State<HomeView> {
                                               snapshot.data!.articles![index].title.toString(),
                                               maxLines: 3,
                                               overflow: TextOverflow.ellipsis,
-                                              // style: GoogleFonts.poppins(),
                                             ),
                                             SizedBox(height: height * .1),
                                             Row(
@@ -185,16 +183,10 @@ class _HomeViewState extends State<HomeView> {
                                               children: [
                                                 Text(
                                                   snapshot.data!.articles![index].source!.name.toString(),
-                                                  // style: GoogleFonts.anton(
-                                                  //     fontSize: 15.0,
-                                                  //     color: Colors.teal),
                                                   style: const TextStyle(fontSize: 15, color: Colors.teal, fontFamily: "Ubuntu"),
                                                 ),
                                                 Text(
                                                   format.format(dateTime),
-                                                  // style: GoogleFonts.akshar(
-                                                  //   fontSize: 12.0,
-                                                  // ),
                                                   style: const TextStyle(fontSize: 12.0, color: Colors.white, fontFamily: "Ubuntu"),
                                                 ),
                                               ],
@@ -212,7 +204,7 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             SizedBox(height: height * .02),
-            Container(
+            SizedBox(
               width: width,
               height: height * .5,
               child: FutureBuilder<CategoriesNewsModel>(
@@ -250,61 +242,68 @@ class _HomeViewState extends State<HomeView> {
                             },
                             child: Padding(
                                 padding: const EdgeInsets.only(top: 5, bottom: 5, left: 12, right: 7),
-                                child: Container(
-                                  child: Row(
-                                    children: [
-                                      ClipRRect(
+                                child: Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () => showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              content: InteractiveViewer(minScale: 1.0, maxScale: 6.0, child: Image.network(snapshot.data!.articles![index].urlToImage.toString())),
+                                            );
+                                          }),
+                                      child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
-                                        child: CachedNetworkImage(
-                                          imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
-                                          fit: BoxFit.fill,
-                                          height: height * .21,
-                                          width: width * .3,
-                                          errorWidget: (context, url, error) => const Icon(Icons.error_outline, color: Colors.red),
+                                        child: Hero(
+                                          tag: "image$index",
+                                          child: CachedNetworkImage(
+                                            imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
+                                            fit: BoxFit.fill,
+                                            height: height * .21,
+                                            width: width * .3,
+                                            errorWidget: (context, url, error) => const Icon(Icons.error_outline, color: Colors.red),
+                                          ),
                                         ),
                                       ),
-                                      SizedBox(width: width * .03),
-                                      Expanded(
-                                          child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
+                                    ),
+                                    SizedBox(width: width * .03),
+                                    Expanded(
+                                        child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Hero(
+                                          tag: "title$index",
+                                          child: Text(
                                             snapshot.data!.articles![index].title.toString(),
-                                            maxLines: 4,
+                                            maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
-                                            // style: GoogleFonts.poppins(
-                                            //     fontSize: 13,
-                                            //     color: Colors.grey,
-                                            //     fontWeight: FontWeight.w500),
-                                            style: const TextStyle(fontSize: 13, color: Colors.grey, fontFamily: "Ubuntu"),
+                                            style: const TextStyle(fontSize: 13, color: AppColor.blackColor, fontFamily: "Ubuntu", fontWeight: FontWeight.w500),
                                           ),
-                                          SizedBox(height: height * .07),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Text(
-                                                  snapshot.data!.articles![index].source!.name.toString(),
-                                                  // style: GoogleFonts.anton(
-                                                  //     fontSize: 15.0,
-                                                  //     color: Colors.teal),
-                                                  style: const TextStyle(fontSize: 15, color: Colors.teal, fontFamily: "Ubuntu"),
-                                                ),
-                                                Text(
-                                                  format.format(dateTime),
-                                                  // style: GoogleFonts.akshar(
-                                                  //   fontSize: 12.0,
-                                                  // ),
-                                                  style: const TextStyle(fontSize: 12, color: Colors.grey, fontFamily: "Ubuntu"),
-                                                )
-                                              ],
+                                        ),
+                                        SizedBox(height: height * .07),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Hero(
+                                              tag: "source$index",
+                                              child: Text(
+                                                snapshot.data!.articles![index].source!.name.toString(),
+                                                style: const TextStyle(fontSize: 14.0, color: Colors.teal, fontFamily: "Ubuntu"),
+                                                overflow: TextOverflow.clip,
+                                              ),
                                             ),
-                                          )
-                                        ],
-                                      ))
-                                    ],
-                                  ),
+                                            Hero(
+                                              tag: "date$index",
+                                              child: Text(
+                                                format.format(dateTime),
+                                                style: const TextStyle(fontSize: 12, color: Colors.grey, fontFamily: "Ubuntu"),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ))
+                                  ],
                                 )),
                           );
                         });

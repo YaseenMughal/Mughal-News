@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mughal_news/utils/routes/routes.dart';
 import 'package:mughal_news/utils/routes/routesName.dart';
-import 'package:mughal_news/views/splash_view.dart';
+import 'package:mughal_news/res/constant/color_constant.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mughal News',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColor.greyColor),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

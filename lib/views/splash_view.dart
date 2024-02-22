@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:mughal_news/res/constant/color_constant.dart';
 import 'package:mughal_news/res/constant/image_constant.dart';
 import 'package:mughal_news/utils/routes/routesName.dart';
 import 'package:mughal_news/utils/utils.dart';
@@ -26,9 +26,8 @@ class _SplashViewState extends State<SplashView> {
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 245, 243, 243),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      backgroundColor: AppColor.splashBgColor,
+      body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,15 +38,10 @@ class _SplashViewState extends State<SplashView> {
               height: height * .5,
               width: width * 1,
             ),
-            SizedBox(height: height * .01),
-            Text(
-              "TOP HEADLINES",
-              // style: GoogleFonts.anton(
-              //     letterSpacing: .6, color: Colors.grey.shade700),
-              style: AppTextStyle.splashTextStyle,
-            ),
+            SizedBox(height: height * .04),
+            Text("TOP HEADLINES", style: AppTextStyle.splashTextStyle),
             SizedBox(height: height * .05),
-            Utils.loader()
+            Utils.appLoading()
           ],
         ),
       ),
