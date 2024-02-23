@@ -6,16 +6,24 @@ class NewsViewModel {
   final _rep = NewsRepository();
 
 // news channel
-  Future<NewsChannelHeadlinesModel> fetchNewsChannelHeadlinesApi(String channelName) async {
-    final response = await _rep.fetchNewsChannelHeadlinesApi(channelName);
-
-    return response;
+  Future<NewsChannelHeadlinesModel?> fetchNewsChannelHeadlinesApi(String channelName) async {
+    try {
+      final response = await _rep.fetchNewsChannelHeadlinesApi(channelName);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
 // news category
-  Future<CategoriesNewsModel> fetchCategoriesNewsApi(String category) async {
-    final response = await _rep.fetchCategoriesNewsApi(category);
-
-    return response;
+  Future<CategoriesNewsModel?> fetchCategoriesNewsApi(String category) async {
+    try {
+      final response = await _rep.fetchCategoriesNewsApi(category);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 }

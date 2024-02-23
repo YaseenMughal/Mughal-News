@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:mughal_news/models/category_news_model.dart';
 import 'package:mughal_news/models/news_channel_headlines_model.dart';
 import 'package:mughal_news/res/constant/color_constant.dart';
+import 'package:mughal_news/utils/utils.dart';
 import 'package:mughal_news/view_models/news_view_model.dart';
 import 'package:mughal_news/views/category_view.dart';
 import 'package:mughal_news/views/news_detail_view.dart';
@@ -16,7 +17,7 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-enum FilterList { bbcNews, washington, reuters, cnn, alJazeera }
+enum FilterList { bbcNews, washington, ary, reuters, cnn, indian, alJazeera, saudi }
 
 class _HomeViewState extends State<HomeView> {
   NewsViewModel newsViewModel = NewsViewModel();
@@ -63,15 +64,23 @@ class _HomeViewState extends State<HomeView> {
               if (FilterList.washington.name == item.name) {
                 name = 'the-washington-post';
               }
-
+              if (FilterList.ary.name == item.name) {
+                name = 'ary-news';
+              }
               if (FilterList.cnn.name == item.name) {
                 name = 'cnn';
+              }
+              if (FilterList.saudi.name == item.name) {
+                name = 'google-news-sa';
               }
               if (FilterList.reuters.name == item.name) {
                 name = 'reuters';
               }
               if (FilterList.alJazeera.name == item.name) {
                 name = 'al-jazeera-english';
+              }
+              if (FilterList.indian.name == item.name) {
+                name = 'the-times-of-india';
               }
 
               setState(() {
@@ -86,19 +95,31 @@ class _HomeViewState extends State<HomeView> {
               ),
               const PopupMenuItem<FilterList>(
                 value: FilterList.washington,
-                child: Text("Washington"),
+                child: Text("Washington News"),
+              ),
+              const PopupMenuItem<FilterList>(
+                value: FilterList.ary,
+                child: Text("Ary News"),
               ),
               const PopupMenuItem<FilterList>(
                 value: FilterList.reuters,
-                child: Text("Reuters"),
+                child: Text("Reuters News"),
+              ),
+              const PopupMenuItem<FilterList>(
+                value: FilterList.saudi,
+                child: Text("Saudia News"),
               ),
               const PopupMenuItem<FilterList>(
                 value: FilterList.cnn,
-                child: Text("CNN"),
+                child: Text("CNN News"),
               ),
               const PopupMenuItem<FilterList>(
                 value: FilterList.alJazeera,
-                child: Text("Al-Jazeera"),
+                child: Text("Al Jazeera News"),
+              ),
+              const PopupMenuItem<FilterList>(
+                value: FilterList.indian,
+                child: Text("The Times of India News"),
               ),
             ],
           )
@@ -114,9 +135,9 @@ class _HomeViewState extends State<HomeView> {
             SizedBox(
               width: width,
               height: height * .55,
-              child: FutureBuilder<NewsChannelHeadlinesModel>(
+              child: FutureBuilder<NewsChannelHeadlinesModel?>(
                 future: newsViewModel.fetchNewsChannelHeadlinesApi(name),
-                builder: (BuildContext context, snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<NewsChannelHeadlinesModel?> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: SpinKitFadingCircle(
@@ -124,10 +145,19 @@ class _HomeViewState extends State<HomeView> {
                         size: 50.0,
                       ),
                     );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Utils.richTexted(title: "Error fetching data!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
+                    );
+                  } else if (snapshot.data == null) {
+                    return Center(
+                      child: Utils.richTexted(title: "No data available!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
+                    );
                   } else {
                     return ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.articles!.length,
+                        itemCount: snapshot.data != null ? snapshot.data!.articles!.length : 0,
+                        // itemCount: snapshot.data!.articles!.length,
                         itemBuilder: (context, index) {
                           DateTime dateTime = DateTime.parse(snapshot.data!.articles![index].publishedAt.toString());
                           return InkWell(
@@ -181,13 +211,15 @@ class _HomeViewState extends State<HomeView> {
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: [
-                                                Text(
-                                                  snapshot.data!.articles![index].source!.name.toString(),
-                                                  style: const TextStyle(fontSize: 15, color: Colors.teal, fontFamily: "Ubuntu"),
+                                                Expanded(
+                                                  child: Text(
+                                                    snapshot.data!.articles![index].source!.name.toString(),
+                                                    style: const TextStyle(fontSize: 15, color: Colors.teal, fontFamily: "Ubuntu"),
+                                                  ),
                                                 ),
                                                 Text(
                                                   format.format(dateTime),
-                                                  style: const TextStyle(fontSize: 12.0, color: Colors.white, fontFamily: "Ubuntu"),
+                                                  style: const TextStyle(fontSize: 12.0, color: Colors.grey, fontFamily: "Ubuntu"),
                                                 ),
                                               ],
                                             ),
@@ -207,9 +239,9 @@ class _HomeViewState extends State<HomeView> {
             SizedBox(
               width: width,
               height: height * .5,
-              child: FutureBuilder<CategoriesNewsModel>(
+              child: FutureBuilder<CategoriesNewsModel?>(
                 future: newsViewModel.fetchCategoriesNewsApi('General'),
-                builder: (BuildContext context, snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<CategoriesNewsModel?> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
                       child: SpinKitFadingCircle(
@@ -217,10 +249,19 @@ class _HomeViewState extends State<HomeView> {
                         size: 50.0,
                       ),
                     );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Utils.richTexted(title: "Error fetching data!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
+                    );
+                  } else if (snapshot.data == null) {
+                    return Center(
+                      child: Utils.richTexted(title: "No data available!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
+                    );
                   } else {
                     return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: snapshot.data!.articles!.length,
+                        itemCount: snapshot.data != null ? snapshot.data!.articles!.length : 0,
+                        // itemCount: snapshot.data!.articles!.length,
                         itemBuilder: (context, index) {
                           DateTime dateTime = DateTime.parse(
                             snapshot.data!.articles![index].publishedAt.toString(),

@@ -15,6 +15,17 @@ class Utils {
         msg: message, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.black, textColor: Colors.white, fontSize: 16.0);
   }
 
+  static appSnackbar(BuildContext context, String text) {
+    return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Column(
+        children: [Text("Mughal News"), Text(text)],
+      ),
+      duration: Duration(days: 1),
+      margin: EdgeInsets.all(8.0),
+      backgroundColor: AppColor.redColor,
+    ));
+  }
+
   static Widget appLoading() {
     return const SpinKitFadingFour(
       color: Colors.teal,

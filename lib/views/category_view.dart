@@ -5,6 +5,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:mughal_news/models/category_news_model.dart';
 import 'package:mughal_news/res/constant/color_constant.dart';
+import 'package:mughal_news/utils/utils.dart';
 import 'package:mughal_news/view_models/news_view_model.dart';
 import 'package:mughal_news/views/news_detail_view.dart';
 
@@ -92,9 +93,9 @@ class _CategoriesViewState extends State<CategoriesView> {
                   ),
                 ),
                 Expanded(
-                  child: FutureBuilder<CategoriesNewsModel>(
+                  child: FutureBuilder<CategoriesNewsModel?>(
                     future: newsViewModel.fetchCategoriesNewsApi(categoryName),
-                    builder: (BuildContext context, snapshot) {
+                    builder: (BuildContext context, AsyncSnapshot<CategoriesNewsModel?> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
                           child: SpinKitFadingCircle(
@@ -102,9 +103,18 @@ class _CategoriesViewState extends State<CategoriesView> {
                             size: 50.0,
                           ),
                         );
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Utils.richTexted(title: "Error fetching data!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
+                        );
+                      } else if (snapshot.data == null) {
+                        return Center(
+                          child: Utils.richTexted(title: "No data available!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
+                        );
                       } else {
                         return ListView.builder(
-                            itemCount: snapshot.data!.articles!.length,
+                            itemCount: snapshot.data != null ? snapshot.data!.articles!.length : 0,
+                            // itemCount: snapshot.data!.articles!.length,
                             itemBuilder: (context, index) {
                               DateTime dateTime = DateTime.parse(
                                 snapshot.data!.articles![index].publishedAt.toString(),

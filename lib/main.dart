@@ -4,7 +4,7 @@ import 'package:mughal_news/utils/routes/routesName.dart';
 import 'package:mughal_news/res/constant/color_constant.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
