@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mughal_news/res/constant/color_constant.dart';
 
 class Utils {
+
   static Size sizeStyle(BuildContext context, {required double ratio}) {
     final height = MediaQuery.of(context).size.height * 1;
     final width = MediaQuery.of(context).size.width * 1;
@@ -52,6 +53,7 @@ class Utils {
       ),
     );
   }
+  
 }
 
 class AppTextStyle {

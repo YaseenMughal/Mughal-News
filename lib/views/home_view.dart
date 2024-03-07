@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -154,83 +155,90 @@ class _HomeViewState extends State<HomeView> {
                       child: Utils.richTexted(title: "No data available!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
                     );
                   } else {
-                    return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data != null ? snapshot.data!.articles!.length : 0,
-                        // itemCount: snapshot.data!.articles!.length,
-                        itemBuilder: (context, index) {
-                          DateTime dateTime = DateTime.parse(snapshot.data!.articles![index].publishedAt.toString());
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NewsDetailView(
-                                            image: snapshot.data!.articles![index].urlToImage.toString(),
-                                            title: snapshot.data!.articles![index].title.toString(),
-                                            date: snapshot.data!.articles![index].publishedAt.toString(),
-                                            description: snapshot.data!.articles![index].description.toString(),
-                                            author: snapshot.data!.articles![index].author.toString(),
-                                            content: snapshot.data!.articles![index].content.toString(),
-                                            source: snapshot.data!.articles![index].source!.name.toString(),
-                                          )));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 5, bottom: 5, left: 12, right: 7),
-                              child: Stack(children: [
-                                SizedBox(
-                                  height: height * .8,
-                                  width: width * .8,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: CachedNetworkImage(
-                                      imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
-                                      fit: BoxFit.fill,
-                                      errorWidget: (context, url, error) => const Icon(Icons.error_outline, color: Colors.red),
-                                    ),
-                                  ),
-                                ),
-                                Positioned(
-                                    bottom: height * .03,
-                                    right: width * .01,
-                                    left: width * .01,
-                                    child: Card(
-                                      elevation: 5,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              snapshot.data!.articles![index].title.toString(),
-                                              maxLines: 3,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            SizedBox(height: height * .1),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    snapshot.data!.articles![index].source!.name.toString(),
-                                                    style: const TextStyle(fontSize: 15, color: Colors.teal, fontFamily: "Ubuntu"),
-                                                  ),
-                                                ),
-                                                Text(
-                                                  format.format(dateTime),
-                                                  style: const TextStyle(fontSize: 12.0, color: Colors.grey, fontFamily: "Ubuntu"),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                    return BounceInUp(
+                      from: 100,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data != null ? snapshot.data!.articles!.length : 0,
+                          // itemCount: snapshot.data!.articles!.length,
+                          itemBuilder: (context, index) {
+                            DateTime dateTime = DateTime.parse(snapshot.data!.articles![index].publishedAt.toString());
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NewsDetailView(
+                                              image: snapshot.data!.articles![index].urlToImage.toString(),
+                                              title: snapshot.data!.articles![index].title.toString(),
+                                              date: snapshot.data!.articles![index].publishedAt.toString(),
+                                              description: snapshot.data!.articles![index].description.toString(),
+                                              author: snapshot.data!.articles![index].author.toString(),
+                                              content: snapshot.data!.articles![index].content.toString(),
+                                              source: snapshot.data!.articles![index].source!.name.toString(),
+                                              listType: 'first',
+                                            )));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 5, bottom: 5, left: 12, right: 7),
+                                child: Stack(children: [
+                                  SizedBox(
+                                    height: height * .8,
+                                    width: width * .8,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Hero(
+                                        tag: 'first_list_image${index.toString()}',
+                                        child: CachedNetworkImage(
+                                          imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
+                                          fit: BoxFit.fill,
+                                          errorWidget: (context, url, error) => const Icon(Icons.error_outline, color: Colors.red),
                                         ),
                                       ),
-                                    ))
-                              ]),
-                            ),
-                          );
-                        });
+                                    ),
+                                  ),
+                                  Positioned(
+                                      bottom: height * .03,
+                                      right: width * .01,
+                                      left: width * .01,
+                                      child: Card(
+                                        elevation: 5,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                snapshot.data!.articles![index].title.toString(),
+                                                maxLines: 3,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                              SizedBox(height: height * .1),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text(
+                                                      snapshot.data!.articles![index].source!.name.toString(),
+                                                      style: const TextStyle(fontSize: 15, color: Colors.teal, fontFamily: "Ubuntu"),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    format.format(dateTime),
+                                                    style: const TextStyle(fontSize: 12.0, color: Colors.grey, fontFamily: "Ubuntu"),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ))
+                                ]),
+                              ),
+                            );
+                          }),
+                    );
                   }
                 },
               ),
@@ -258,109 +266,104 @@ class _HomeViewState extends State<HomeView> {
                       child: Utils.richTexted(title: "No data available!\n", subTitle: "Please check your internet connection.", titleColor: Colors.teal),
                     );
                   } else {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data != null ? snapshot.data!.articles!.length : 0,
-                        // itemCount: snapshot.data!.articles!.length,
-                        itemBuilder: (context, index) {
-                          DateTime dateTime = DateTime.parse(
-                            snapshot.data!.articles![index].publishedAt.toString(),
-                          );
-                          return InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NewsDetailView(
-                                            image: snapshot.data!.articles![index].urlToImage.toString(),
-                                            title: snapshot.data!.articles![index].title.toString(),
-                                            date: snapshot.data!.articles![index].publishedAt.toString(),
-                                            description: snapshot.data!.articles![index].description.toString(),
-                                            author: snapshot.data!.articles![index].author.toString(),
-                                            content: snapshot.data!.articles![index].content.toString(),
-                                            source: snapshot.data!.articles![index].source!.name.toString(),
-                                          )));
-                            },
-                            child: Padding(
-                                padding: const EdgeInsets.only(top: 5, bottom: 5, left: 12, right: 7),
-                                child: Row(
-                                  children: [
-                                    InkWell(
-                                      onTap: () => showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              contentPadding: EdgeInsets.zero,
-                                              content: Container(
-                                                  height: height * .4,
-                                                  width: double.infinity,
-                                                  child: InteractiveViewer(
-                                                      minScale: 1.0,
-                                                      maxScale: 6.0,
-                                                      child: ClipRRect(
-                                                        borderRadius: BorderRadius.circular(16.0),
-                                                        child: Image.network(
-                                                          snapshot.data!.articles![index].urlToImage.toString(),
-                                                          fit: BoxFit.fill,
-                                                        ),
-                                                      ))),
-                                            );
-                                          }),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: Hero(
-                                          tag: "image$index",
-                                          child: CachedNetworkImage(
-                                            imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
-                                            fit: BoxFit.fill,
-                                            height: height * .21,
-                                            width: width * .3,
-                                            errorWidget: (context, url, error) => const Icon(Icons.error_outline, color: Colors.red),
+                    return BounceInLeft(
+                      from: 120,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data != null ? snapshot.data!.articles!.length : 0,
+                          // itemCount: snapshot.data!.articles!.length,
+                          itemBuilder: (context, index) {
+                            DateTime dateTime = DateTime.parse(
+                              snapshot.data!.articles![index].publishedAt.toString(),
+                            );
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => NewsDetailView(
+                                              image: snapshot.data!.articles![index].urlToImage.toString(),
+                                              title: snapshot.data!.articles![index].title.toString(),
+                                              date: snapshot.data!.articles![index].publishedAt.toString(),
+                                              description: snapshot.data!.articles![index].description.toString(),
+                                              author: snapshot.data!.articles![index].author.toString(),
+                                              content: snapshot.data!.articles![index].content.toString(),
+                                              source: snapshot.data!.articles![index].source!.name.toString(),
+                                              listType: 'second',
+                                            )));
+                              },
+                              child: Padding(
+                                  padding: const EdgeInsets.only(top: 5, bottom: 5, left: 12, right: 7),
+                                  child: Row(
+                                    children: [
+                                      InkWell(
+                                        onTap: () => showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                contentPadding: EdgeInsets.zero,
+                                                content: Container(
+                                                    height: height * .4,
+                                                    width: double.infinity,
+                                                    child: InteractiveViewer(
+                                                        minScale: 1.0,
+                                                        maxScale: 6.0,
+                                                        child: ClipRRect(
+                                                          borderRadius: BorderRadius.circular(16.0),
+                                                          child: Image.network(
+                                                            snapshot.data!.articles![index].urlToImage.toString(),
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ))),
+                                              );
+                                            }),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(12),
+                                          child: Hero(
+                                            tag: 'second_list_image${index.toString()}',
+                                            child: CachedNetworkImage(
+                                              imageUrl: snapshot.data!.articles![index].urlToImage.toString(),
+                                              fit: BoxFit.fill,
+                                              height: height * .21,
+                                              width: width * .3,
+                                              errorWidget: (context, url, error) => const Icon(Icons.error_outline, color: Colors.red),
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(width: width * .03),
-                                    Expanded(
-                                        child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Hero(
-                                          tag: "title$index",
-                                          child: Text(
+                                      SizedBox(width: width * .03),
+                                      Expanded(
+                                          child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
                                             snapshot.data!.articles![index].title.toString(),
                                             maxLines: 3,
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(fontSize: 13, color: AppColor.blackColor, fontFamily: "Ubuntu", fontWeight: FontWeight.w500),
                                           ),
-                                        ),
-                                        SizedBox(height: height * .07),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Hero(
-                                              tag: "source$index",
-                                              child: Text(
+                                          SizedBox(height: height * .07),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
                                                 snapshot.data!.articles![index].source!.name.toString(),
                                                 style: const TextStyle(fontSize: 14.0, color: Colors.teal, fontFamily: "Ubuntu"),
                                                 overflow: TextOverflow.clip,
                                               ),
-                                            ),
-                                            Hero(
-                                              tag: "date$index",
-                                              child: Text(
+                                              Text(
                                                 format.format(dateTime),
                                                 style: const TextStyle(fontSize: 12, color: Colors.grey, fontFamily: "Ubuntu"),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ))
-                                  ],
-                                )),
-                          );
-                        });
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ))
+                                    ],
+                                  )),
+                            );
+                          }),
+                    );
                   }
                 },
               ),

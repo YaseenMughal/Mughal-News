@@ -169,7 +169,7 @@ class _CategoriesViewState extends State<CategoriesView> {
                                               fit: BoxFit.fill,
                                               height: height * .21,
                                               width: width * .3,
-                                              errorWidget: (context, url, error) => const Icon(Icons.error_outline, color: Colors.red),
+                                              errorWidget: (context, url, error) => Center(child: const Icon(Icons.error_outline, color: Colors.red)),
                                             ),
                                           ),
                                         ),
@@ -191,11 +191,13 @@ class _CategoriesViewState extends State<CategoriesView> {
                                                 Expanded(
                                                   child: Text(
                                                     snapshot.data!.articles![index].source!.name.toString(),
+                                                    overflow: TextOverflow.clip,
                                                     style: const TextStyle(fontSize: 14.0, color: Colors.teal, fontFamily: "Ubuntu"),
                                                   ),
                                                 ),
                                                 Text(
                                                   format.format(dateTime),
+                                                  overflow: TextOverflow.clip,
                                                   style: const TextStyle(fontSize: 12, color: Colors.grey, fontFamily: "Ubuntu"),
                                                 )
                                               ],

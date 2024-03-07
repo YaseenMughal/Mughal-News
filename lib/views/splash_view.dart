@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:mughal_news/res/constant/color_constant.dart';
 import 'package:mughal_news/res/constant/image_constant.dart';
 import 'package:mughal_news/utils/routes/routesName.dart';
 import 'package:mughal_news/utils/utils.dart';
+import 'package:animate_do/animate_do.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -32,14 +34,17 @@ class _SplashViewState extends State<SplashView> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              AppImage.splashImage,
-              fit: BoxFit.cover,
-              height: height * .5,
-              width: width * 1,
+            FadeInLeft(
+              from: 200,
+              child: Image.asset(
+                AppImage.splashImage,
+                fit: BoxFit.cover,
+                height: height * .5,
+                width: width * 1,
+              ),
             ),
             SizedBox(height: height * .04),
-            Text("TOP HEADLINES", style: AppTextStyle.splashTextStyle),
+            Text("TOP HEADLINES", style: AppTextStyle.splashTextStyle).animate().rotate(curve: Curves.linear, duration: const Duration(milliseconds: 300)),
             SizedBox(height: height * .05),
             Utils.appLoading()
           ],
